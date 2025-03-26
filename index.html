@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三生園露營訂位</title>
+
+  <!-- 字型與風格參考 Casangelina -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Flatpickr 日期選擇器 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #e5dfd6;
+      color: #3a3a3a;
+    }
+    label {
+      font-weight: 500;
+      color: #5c5c5c;
+    }
+    .form-title {
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #2a2a2a;
+    }
+    .form-section {
+      background-color: #f9f6f2;
+      border: 1px solid #ddd5cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-2xl mx-auto mt-12 p-10 rounded-xl shadow-md form-section">
+    <h1 class="form-title mb-6 tracking-wide text-center">三生園露營訂位</h1>
+
+    <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSd4gVIgBTdaJSwzO0xSb75t69w9J_DYT1b26AesGTObyTDTyA/formResponse" method="POST" target="_blank" class="space-y-6">
+      <!-- 隱藏的 LINE 使用者 ID -->
+      <input type="hidden" id="userId" name="entry.1227198430" />
+
+      <div>
+        <label class="block mb-1">姓名</label>
+        <input type="text" name="entry.491102236" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
+      </div>
+
+      <div>
+        <label class="block mb-1">A1 區帳數</label>
+        <select name="entry.1032059413" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-1">A2 區帳數</label>
+        <select name="entry.424068879" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+         
+
+        </select>
+      </div>
+    
+      <div>
+        <label class="block mb-1">A3 區帳數</label>
+        <select name="entry.1511602136" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+         
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-1">C 區帳數</label>
+        <select name="entry.608763680" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white">
+          <option value="0">0</option>
+          <option value="6">6帳包區</option>
+          
+         
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-1">入營日</label>
+        <input type="text" id="arrival" name="entry.1925831490" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" placeholder="YYYY-MM-DD" required />
+      </div>
+
+      <div>
+        <label class="block mb-1">離營日</label>
+        <input type="text" id="departure" name="entry.1343579678" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" placeholder="YYYY-MM-DD" required />
+      </div>
+
+      <div>
+        <label class="block mb-1">幾台車</label>
+        <input type="number" name="entry.1154437483" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
+      </div>
+
+      <button type="submit" class="w-full bg-neutral-900 text-white py-3 rounded-full hover:bg-neutral-700 tracking-wider transition">送出訂位</button>
+    </form>
+  </div>
+
+  <script>
+    flatpickr("#arrival", { dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr("#departure", { dateFormat: "Y-m-d", minDate: "today" });
+
+    async function main() {
+      await liff.init({ liffId: "YOUR_LIFF_ID" });
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      } else {
+        const profile = await liff.getProfile();
+        document.getElementById("userId").value = profile.userId;
+      }
+    }
+    main();
+    document.getElementById("bookingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLSd4gVIgBTdaJSwzO0xSb75t69w9J_DYT1b26AesGTObyTDTyA/formResponse", {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      }).then(() => {
+        window.location.href = "/booking/thank.html"; // ✅ 你可以改這個網址
+      });
+    });
+  </script>
+</body>
+</html>
