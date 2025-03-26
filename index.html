@@ -144,7 +144,7 @@
       const arrival = document.getElementById("arrival").value;
       const departure = document.getElementById("departure").value;
       const cars = document.getElementById("cars").value;
-      const userId = document.getElementById("userId").value;
+      //const userId = document.getElementById("userId").value;
 
       if (name && arrival && departure && cars) {
         const formData = new FormData();
@@ -158,10 +158,10 @@
           method: "POST",
           mode: "no-cors",
           body: formData
-        }).finally(() => {
-          document.getElementById("bookingForm").reset();
-          window.location.href = "thank.html";
-        });
+        })
+        setTimeout(() => {
+        window.location.href = "thank.html";
+        }, 300);
       }
     });
   </script>
