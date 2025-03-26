@@ -115,7 +115,7 @@
       </div>
 
       <div>
-        <label class="block mb-1">幾台車</label>
+        <label class="block mb-1">幾車</label>
         <input type="number" name="entry.1154437483" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
       </div>
 
@@ -139,16 +139,30 @@
     main();
     document.getElementById("bookingForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
 
-      fetch("https://docs.google.com/forms/d/e/1FAIpQLSd4gVIgBTdaJSwzO0xSb75t69w9J_DYT1b26AesGTObyTDTyA/formResponse", {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-      }).then(() => {
-        window.location.href = "/booking/thank.html"; // ✅ 你可以改這個網址
-      });
+      const name = document.getElementById("name").value;
+      const arrival = document.getElementById("arrival").value;
+      const departure = document.getElementById("departure").value;
+      const cars = document.getElementById("cars").value;
+      const userId = document.getElementById("userId").value;
+
+      if (name && arrival && departure && cars) {
+        const formData = new FormData();
+        formData.append("entry.491102236", name);
+        formData.append("entry.1925831490", arrival);
+        formData.append("entry.1343579678", departure);
+        formData.append("entry.1154437483", cars);
+        //formData.append("entry.1227198430", userId);
+
+        fetch("https://docs.google.com/forms/d/e/1FAIpQLSd4gVIgBTdaJSwzO0xSb75t69w9J_DYT1b26AesGTObyTDTyA/formResponse", {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        }).finally(() => {
+          document.getElementById("bookingForm").reset();
+          window.location.href = "thank.html";
+        });
+      }
     });
   </script>
 </body>
