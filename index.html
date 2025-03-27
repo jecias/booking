@@ -149,11 +149,19 @@
       const arrival = document.getElementById("arrival").value;
       const departure = document.getElementById("departure").value;
       const cars = document.getElementById("cars").value;
+      const a1 = document.querySelector('[name="entry.1032059413"]').value;
+      const a2 = document.querySelector('[name="entry.424068879"]').value;
+      const a3 = document.querySelector('[name="entry.1511602136"]').value;
+      const c  = document.querySelector('[name="entry.608763680"]').value;
       //const userId = document.getElementById("userId").value;
 
       if (name && arrival && departure && cars) {
         const formData = new FormData();
         formData.append("entry.491102236", name);
+        formData.append("entry.1032059413", a1);              
+        formData.append("entry.424068879", a2);              
+        formData.append("entry.1511602136", a3);              
+        formData.append("entry.608763680", c);     
         formData.append("entry.1925831490", arrival);
         formData.append("entry.1343579678", departure);
         formData.append("entry.1154437483", cars);
