@@ -41,14 +41,13 @@
 <body>
   <div class="max-w-2xl mx-auto mt-12 p-10 rounded-xl shadow-md form-section">
     <h1 class="form-title mb-6 tracking-wide text-center">三生園露營訂位</h1>
-
-    <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSd4gVIgBTdaJSwzO0xSb75t69w9J_DYT1b26AesGTObyTDTyA/formResponse" method="POST" target="_blank" class="space-y-6">
+    <form id="bookingForm" class="space-y-6">
       <!-- 隱藏的 LINE 使用者 ID -->
       <input type="hidden" id="userId" name="entry.1227198430" />
 
       <div>
         <label class="block mb-1">姓名</label>
-        <input type="text" name="entry.491102236" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
+        <input type="text" id="name" name="entry.491102236" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
       </div>
 
       <div>
@@ -115,8 +114,8 @@
       </div>
 
       <div>
-        <label class="block mb-1">幾車</label>
-        <input type="number" name="entry.1154437483" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
+        <label class="block mb-1">幾台車</label>
+        <input type="number" id="cars" name="entry.1154437483" class="w-full border border-gray-300 px-4 py-2 rounded-md bg-white" required />
       </div>
 
       <button type="submit" class="w-full bg-neutral-900 text-white py-3 rounded-full hover:bg-neutral-700 tracking-wider transition">送出訂位</button>
@@ -124,21 +123,27 @@
   </div>
 
   <script>
-    flatpickr("#arrival", { dateFormat: "Y-m-d", minDate: "today" });
-    flatpickr("#departure", { dateFormat: "Y-m-d", minDate: "today" });
+    document.addEventListener("DOMContentLoaded", function () {
+      // 初始化日期選擇器
+      flatpickr("#arrival", { dateFormat: "Y-m-d", minDate: "today" });
+      flatpickr("#departure", { dateFormat: "Y-m-d", minDate: "today" });
 
-    async function main() {
-      await liff.init({ liffId: "YOUR_LIFF_ID" });
-      if (!liff.isLoggedIn()) {
-        liff.login();
-      } else {
-        const profile = await liff.getProfile();
-        document.getElementById("userId").value = profile.userId;
-      }
+      // 初始化 LIFF，取得使用者 ID 並填入隱藏欄位
+      async function main() {
+        await liff.init({ liffId: "YOUR_LIFF_ID" });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          const profile = await liff.getProfile();
+          document.getElementById("userId").value = profile.userId;
+        }
     }
     main();
-    document.getElementById("bookingForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    const form = document.getElementById("bookingForm");
+      if (!form) return;
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
 
       const name = document.getElementById("name").value;
       const arrival = document.getElementById("arrival").value;
@@ -158,12 +163,13 @@
           method: "POST",
           mode: "no-cors",
           body: formData
-        })
+        });
         setTimeout(() => {
-        window.location.href = "thank.html";
+        window.location.replace("thank.html");
         }, 300);
       }
     });
+  });
   </script>
 </body>
 </html>
